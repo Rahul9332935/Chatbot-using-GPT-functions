@@ -1,0 +1,176 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <style>
+        .chat-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            display: flex;
+            flex-direction: column;
+        }
+        .user-message {
+            align-self: flex-end;
+            background-color: #F0F0F0;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .bot-message {
+            align-self: flex-start;
+            background-color: #DCF8C6;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div style="margin: 20px;">
+        <h1>Chatbot</h1>
+        <div class="chat-container">
+        </div>
+        <div>
+            <input type="text" id="user-input" style="width: 80%;" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userMessage = document.getElementById("user-input").value;
+            document.getElementById("user-input").value = ""; // Clear the input field
+
+            // Display user message
+            const chatContainer = document.querySelector(".chat-container");
+            const userMessageDiv = document.createElement("div");
+            userMessageDiv.className = "user-message";
+            userMessageDiv.textContent = "User: " + userMessage;
+            chatContainer.appendChild(userMessageDiv);
+
+            // Send the user message to the server
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    data: userMessage
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display bot response
+                const botMessageDiv = document.createElement("div");
+                botMessageDiv.className = "bot-message";
+                botMessageDiv.textContent = "Bot: " + data.response;
+                chatContainer.appendChild(botMessageDiv);
+
+                // Scroll to the bottom to see the latest messages
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            });
+        }
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+        }
+        .chat-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 400px;
+            overflow-y: scroll;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+        .user-message {
+            align-self: flex-end;
+            background-color: #DCF8C6;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .bot-message {
+            align-self: flex-start;
+            background-color: #F0F0F0;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .typing-indicator {
+            align-self: flex-start;
+            background-color: #F0F0F0;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div style="margin: 20px;">
+        <h1>Chatbot</h1>
+        <div class="chat-container">
+        </div>
+        <div style="display: flex; flex-direction: row;">
+            <input type="text" id="user-input" style="flex: 1;" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userMessage = document.getElementById("user-input").value;
+            document.getElementById("user-input").value = ""; // Clear the input field
+
+            // Display user message
+            const chatContainer = document.querySelector(".chat-container");
+            const userMessageDiv = document.createElement("div");
+            userMessageDiv.className = "user-message";
+            userMessageDiv.textContent = "User: " + userMessage;
+            chatContainer.appendChild(userMessageDiv);
+
+            // Display typing indicator
+            const typingIndicator = document.createElement("div");
+            typingIndicator.className = "typing-indicator";
+            typingIndicator.textContent = "Bot is typing...";
+            chatContainer.appendChild(typingIndicator);
+
+            // Send the user message to the server
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    data: userMessage
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove the typing indicator
+                chatContainer.removeChild(typingIndicator);
+
+                // Display bot response
+                const botMessageDiv = document.createElement("div");
+                botMessageDiv.className = "bot-message";
+                botMessageDiv.textContent = "Bot: " + data.response;
+                chatContainer.appendChild(botMessageDiv);
+
+                // Scroll to the bottom to see the latest messages
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            });
+        }
+    </script>
+</body>
+</html>
+
+
